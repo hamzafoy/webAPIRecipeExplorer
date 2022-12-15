@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebAPIRecipes.Models;
 
 namespace WebAPIRecipes.Controllers
 {
@@ -7,7 +8,20 @@ namespace WebAPIRecipes.Controllers
     [ApiController]
     public class RecipesController : ControllerBase
     {
-        readonly string[] meals = { "Mujadarah", "Chicken Tikka", "Fuul Medammas", "Lamb Biryani", "Nihari", "Mansaaf", "Kofta Kebab" };
+        Database db = new Database();
+
+        readonly Recipe[] meals =
+        {
+            new Recipe() { Name = "Falafel", Description = "Fried Chickpea mounds", Cuisines = new string[]{ "Arab", "Middle Eastern" } },
+            new Recipe() { Name = "Mujadarah"},
+            new Recipe() { Name = "Mansaaf"},
+            new Recipe() { Name = "Nihari"},
+            new Recipe() { Name = "Ghosht Biryani"},
+            new Recipe() { Name = "Fattoush"},
+            new Recipe() { Name = "Chana ke Halwa"},
+            new Recipe() { Name = "Fuul Medammas"},
+            new Recipe() { Name = "Kuku Sabzi"}
+        };
 
         [HttpGet]
         public ActionResult GetMeals()
@@ -30,9 +44,10 @@ namespace WebAPIRecipes.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateNewMeals()
+        public ActionResult CreateNewMeals([FromBody] Recipe newRecipe)
         {
-            return NotFound();
+            db.RecipeCreate(newRecipe);
+            return Created("", newRecipe);
         }
     }
 }
