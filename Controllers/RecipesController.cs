@@ -7,14 +7,24 @@ namespace WebAPIRecipes.Controllers
     [ApiController]
     public class RecipesController : ControllerBase
     {
+        readonly string[] meals = { "Mujadarah", "Chicken Tikka", "Fuul Medammas", "Lamb Biryani", "Nihari", "Mansaaf", "Kofta Kebab" };
+
         [HttpGet]
         public ActionResult GetMeals()
         {
-            string[] meals = { "Mujadarah", "Chicken Tikka", "Fuul Medammas", "Lamb Biryani", "Nihari", "Mansaaf", "Kofta Kebab" };
-            
             if (meals.Any())
             {
                 return Ok(meals);
+            }
+            return NotFound();
+        }
+
+        [HttpGet("/NumberOfRecipes")]
+        public ActionResult GetSelectNumberOfMeals([FromQuery] int count)
+        {
+            if (meals.Any())
+            {
+                return Ok(meals.Take(count));
             }
             return NotFound();
         }
