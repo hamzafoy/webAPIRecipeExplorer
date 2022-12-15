@@ -8,11 +8,21 @@ namespace WebAPIRecipes.Controllers
     public class RecipesController : ControllerBase
     {
         [HttpGet]
-
-        public string[] GetMeals()
+        public ActionResult GetMeals()
         {
             string[] meals = { "Mujadarah", "Chicken Tikka", "Fuul Medammas", "Lamb Biryani", "Nihari", "Mansaaf", "Kofta Kebab" };
-            return meals;
+            
+            if (meals.Any())
+            {
+                return Ok(meals);
+            }
+            return NotFound();
+        }
+
+        [HttpPost]
+        public ActionResult CreateNewMeals()
+        {
+            return NotFound();
         }
     }
 }
