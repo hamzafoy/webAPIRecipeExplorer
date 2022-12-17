@@ -9,7 +9,30 @@ namespace WebAPIRecipes.Models
     public class Database
     {
         public SqlConnection con = new SqlConnection("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=WebAPIRecipes;Integrated Security=True;Connect Timeout=30;");
-
+        
+        public DataTable RecipesRead()
+        {
+            try
+            {
+                using (SqlCommand cmd = new SqlCommand("SPROC_RecipesRead"))
+                {
+                    //List<Recipe> listOfRecipes = new List<Recipe>();
+                    cmd.Connection = con;
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    con.Open();
+                    using (var results = cmd.ExecuteReader())
+                    {
+                        var dataTable = new DataTable();
+                        dataTable.Load(results);
+                        return dataTable;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
         public void RecipeCreate(Recipe recip)
         {
             try

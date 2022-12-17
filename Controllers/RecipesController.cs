@@ -26,11 +26,13 @@ namespace WebAPIRecipes.Controllers
         [HttpGet]
         public ActionResult GetMeals()
         {
-            if (meals.Any())
-            {
-                return Ok(meals);
-            }
-            return NotFound();
+            //if (meals.Any())
+            //{
+            //    return Ok(meals);
+            //}
+            //return NotFound();
+            db.RecipesRead();
+            return Ok();
         }
 
         [HttpGet("/NumberOfRecipes")]
