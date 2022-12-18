@@ -10,7 +10,7 @@ namespace WebAPIRecipes.Controllers
     {
         Database db = new Database();
 
-        readonly Recipe[] meals =
+        readonly List<Recipe> meals = new List<Recipe>()
         {
             new Recipe() { Name = "Falafel", Description = "Fried Chickpea mounds", Cuisines = new string[]{ "Arab", "Middle Eastern" } },
             new Recipe() { Name = "Mujadarah"},
@@ -31,8 +31,8 @@ namespace WebAPIRecipes.Controllers
             //    return Ok(meals);
             //}
             //return NotFound();
-            db.RecipesRead();
-            return Ok();
+            var listOfRecipes = db.RecipesRead();
+            return Ok(listOfRecipes);
         }
 
         [HttpGet("/NumberOfRecipes")]

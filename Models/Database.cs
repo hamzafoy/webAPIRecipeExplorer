@@ -10,22 +10,33 @@ namespace WebAPIRecipes.Models
     {
         public SqlConnection con = new SqlConnection("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=WebAPIRecipes;Integrated Security=True;Connect Timeout=30;");
         
-        public DataTable RecipesRead()
+        public List<Recipe> RecipesRead()
         {
             try
             {
                 using (SqlCommand cmd = new SqlCommand("SPROC_RecipesRead"))
                 {
-                    //List<Recipe> listOfRecipes = new List<Recipe>();
+                    List<Recipe> listOfRecipes = new List<Recipe>();
+                    var dataTable = new DataTable();
                     cmd.Connection = con;
                     cmd.CommandType = CommandType.StoredProcedure;
                     con.Open();
                     using (var results = cmd.ExecuteReader())
                     {
-                        var dataTable = new DataTable();
                         dataTable.Load(results);
-                        return dataTable;
                     }
+                    foreach (DataRow row in dataTable.Rows)
+                    {
+                        var values = row.ItemArray;
+                        var Recipe = new Recipe()
+                        {
+                            Name = values[0].ToString(),
+                            Description = values[1].ToString()
+                        };
+                        listOfRecipes.Add(Recipe);
+                    }
+                    con.Close();
+                    return listOfRecipes;
                 }
             }
             catch (Exception ex)
